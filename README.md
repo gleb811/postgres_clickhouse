@@ -6,6 +6,7 @@ cd certificates/own/
 
 Edit "conf.tpl" and run:  
 ./gen_certs.sh  
+  
 cd ../..  
 dnf install podman  
 dnf install podman-compose  
