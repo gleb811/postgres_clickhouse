@@ -1,0 +1,46 @@
+services:
+  clickhouse:
+    image: docker.io/library/clickhouse:latest
+    container_name: clickhouse
+    restart: always
+    ports:
+      - 9440:9440/tcp
+      - 8443:8443
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    volumes:
+      - ./data/clickhouse/:/var/lib/clickhouse/
+      - "./certificates/own/:/cert/:ro"
+      - ./clickhouse/clickhouse-config.xml:/etc/clickhouse-server/config.d/logging.xml:ro
+      - "./clickhouse/clickhouse-ssl.xml:/etc/clickhouse-server/config.d/ssl.xml:ro"
+      - ./clickhouse/clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      CLICKHOUSE_DB: "db"
+      CLICKHOUSE_USER: "user"
+      CLICKHOUSE_PASSWORD: "password"
+  postgres:
+    image: docker.io/library/postgres:15.8-alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data
+      - "./certificates/own/:/cert/:ro"
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "db"
+      TZ: Europe/Moscow
+    command: >
+      -c ssl=on
+      -c ssl_cert_file=/cert/postgres.crt
+      -c ssl_key_file=/cert/postgres.key
+      -c ssl_ca_file=/cert/ca.crt
+      -c listen_addresses='*'
+      -c hba_file=/var/lib/postgresql/data/pg_hba.conf
+    user: "999:999"  # Forces postgres user ownership
