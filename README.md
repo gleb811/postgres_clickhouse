@@ -17,10 +17,10 @@ getenforce
 sudo setenforce 0  
 getenforce
 
-If need permanently 
-sudo nano /etc/selinux/config
-sudo nano /etc/sysconfig/selinux
-SELINUX=disabled
+If need permanently  
+sudo nano /etc/selinux/config  
+sudo nano /etc/sysconfig/selinux  
+SELINUX=disabled  
 Then reboot
 
 podman compose up -d
