@@ -12,9 +12,9 @@ dnf install podman
 dnf install podman-compose  
 ./prepare.sh  
 
-Switch off SELinux if present
-getenforce
-sudo setenforce 0
+Switch off SELinux if present  
+getenforce  
+sudo setenforce 0  
 getenforce
 
 If need permanently 
