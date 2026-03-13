@@ -23,4 +23,7 @@ sudo nano /etc/sysconfig/selinux
 SELINUX=disabled  
 Then reboot
 
+systemctl enable podman.socket or systemctl --user enable --now podman.socket
+systemctl start podman.socket
+
 podman compose up -d
